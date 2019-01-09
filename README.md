@@ -10,4 +10,4 @@ Just some terraform code to build infrastructure for HDP/HDF clusters
 - variables.tf - Variables - override the defaults with a .tfvars file
 - vpc.tf - This creates the VPC with appropriate subnets, an internet gateway, security groups, and a route table
 
-Once the infrastructure has been built, you could use something like the [ansible-hortonworks](https://github.com/hortonworks/ansible-hortonworks) collection of playbooks to build an HDP or HDF cluster.
+Once the infrastructure has been built, you could use something like the [ansible-hortonworks](https://github.com/hortonworks/ansible-hortonworks) collection of playbooks (with a static inventory!) to build an HDP or HDF cluster.
