@@ -8,10 +8,11 @@ resource "aws_db_subnet_group" "hdpdb" {
 }
 
 resource "aws_db_instance" "hdp" {
+  count = "${var.db_count}"
   allocated_storage = 20
   storage_type = "gp2"
   engine = "mariadb"
-  engine_version = "10.2.11"
+  engine_version = "10.2.15"
   instance_class = "db.t2.micro"
   identifier = "hdp"
   username = "${var.rds_username}"

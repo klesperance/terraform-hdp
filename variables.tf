@@ -50,6 +50,10 @@ most_recent = true
   }
 }
 
+variable "db_count" {
+  default = 0
+}
+
 variable "hdpmn_count" {
   default = 0
 }
@@ -66,7 +70,7 @@ variable "hdfmn_count" {
   default = 0
 }
 
-variable "hdfdn_count" {
+variable "hdfwn_count" {
   default = 0
 }
 
@@ -90,7 +94,7 @@ variable "hdfmn_type" {
   default = "r4.xlarge"
 }
 
-variable "hdfdn_type" {
+variable "hdfwn_type" {
   default = "r4.xlarge"
 }
 

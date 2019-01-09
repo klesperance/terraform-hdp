@@ -35,9 +35,9 @@ resource "aws_instance" "hdf-management" {
 
 resource "aws_instance" "hdf-worker" {
   ami = "${data.aws_ami.centos.id}"
-  count = "${var.hdfdn_count}"
+  count = "${var.hdfwn_count}"
 
-  instance_type = "${var.hdfdn_type}"
+  instance_type = "${var.hdfwn_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
   vpc_security_group_ids = ["${aws_security_group.default_cluster_access.id}"]
 

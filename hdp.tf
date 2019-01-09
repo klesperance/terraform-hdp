@@ -2,6 +2,8 @@ resource "aws_instance" "hdp-master" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.hdpmn_count}"
 
+  private_ip = "10.0.10.1${count.index}"
+
   instance_type = "${var.hdpmn_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
   vpc_security_group_ids = ["${aws_security_group.default_cluster_access.id}"]
@@ -37,6 +39,8 @@ resource "aws_instance" "hdp-worker" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.hdpwn_count}"
 
+  private_ip = "10.0.10.3${count.index}"
+
   instance_type = "${var.hdpwn_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
   vpc_security_group_ids = ["${aws_security_group.default_cluster_access.id}"]
@@ -71,6 +75,8 @@ resource "aws_instance" "hdp-worker" {
 resource "aws_instance" "hdp-edge" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.hdpen_count}"
+
+  private_ip = "10.0.10.2${count.index}"
 
   instance_type = "${var.hdpen_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
