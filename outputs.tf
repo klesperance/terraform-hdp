@@ -21,3 +21,15 @@ output "hdpdn_ips" {
 output "hdpen_ips" {
   value = ["${aws_instance.hdp-edge.*.private_ip}"]
 }
+
+output "hdpdp_ips" {
+  value = ["${aws_instance.hdp-dp.*.private_ip}"]
+}
+
+output "hdpdas_ips" {
+  value = ["${aws_instance.hdp-das.*.private_ip}"]
+}
+
+output "ipa_ips" {
+  value = ["${aws_instance.hdp-ipa.*.private_ip}"]
+}

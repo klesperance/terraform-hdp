@@ -13,7 +13,7 @@ resource "aws_db_instance" "hdp" {
   storage_type = "gp2"
   engine = "mariadb"
   engine_version = "10.2.15"
-  instance_class = "db.t2.micro"
+  instance_class = "${var.rds_instance_type}"
   identifier = "hdp"
   username = "${var.rds_username}"
   password = "${var.rds_password}"

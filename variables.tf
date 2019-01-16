@@ -78,6 +78,18 @@ variable "hdfen_count" {
   default = 0
 }
 
+variable "hdpdp_count" {
+  default = 0
+}
+
+variable "hdpdas_count" {
+  default = 0
+}
+
+variable "ipa_count" {
+  default = 0
+}
+
 variable "hdpmn_type" {
   default = "r4.xlarge"
 }
@@ -102,10 +114,26 @@ variable "hdfen_type" {
   default = "r4.xlarge"
 }
 
+variable "hdpdas_type" {
+  default = "r4.xlarge"
+}
+
+variable "hdpdp_type" {
+  default = "r4.xlarge"
+}
+
+variable "ipa_type" {
+  default = "t2.small"
+}
+
 variable "rds_username" {
   default = "user"
 }
 
 variable "rds_password" {
   default = "password"
+}
+
+variable "rds_instance_type" {
+  default = "db.t2.medium"
 }
