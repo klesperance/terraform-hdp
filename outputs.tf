@@ -31,5 +31,13 @@ output "hdpdas_ips" {
 }
 
 output "ipa_ips" {
-  value = ["${aws_instance.hdp-ipa.*.private_ip}"]
+  value = ["${aws_instance.ipa.*.private_ip}"]
+}
+
+output "hdf-workers" {
+  value = ["${aws_instance.hdf-worker.*.private_ip}"]
+}
+
+output "hdf-management" {
+  value = ["${aws_instance.hdf-management.*.private_ip}"]
 }

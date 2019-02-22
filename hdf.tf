@@ -2,6 +2,8 @@ resource "aws_instance" "hdf-management" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.hdfmn_count}"
 
+  private_ip = "10.0.10.7${count.index + 1}"
+
   instance_type = "${var.hdfmn_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
   vpc_security_group_ids = ["${aws_security_group.default_cluster_access.id}"]
@@ -26,7 +28,7 @@ resource "aws_instance" "hdf-management" {
   }
 
   tags {
-    Name = "hdf-management-${count.index}"
+    Name = "hdf-management-${count.index + 1}"
   }
 
   depends_on = ["aws_internet_gateway.hdp"]
@@ -36,6 +38,8 @@ resource "aws_instance" "hdf-management" {
 resource "aws_instance" "hdf-worker" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.hdfwn_count}"
+
+  private_ip = "10.0.10.8${count.index + 1}"
 
   instance_type = "${var.hdfwn_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
@@ -61,7 +65,7 @@ resource "aws_instance" "hdf-worker" {
   }
 
   tags {
-    Name = "hdf-worker-${count.index}"
+    Name = "hdf-worker-${count.index + 1}"
   }
 
   depends_on = ["aws_internet_gateway.hdp"]
@@ -71,6 +75,8 @@ resource "aws_instance" "hdf-worker" {
 resource "aws_instance" "hdf-edge" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.hdfen_count}"
+
+  private_ip = "10.0.10.9${count.index + 1}"
 
   instance_type = "${var.hdfen_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
@@ -96,7 +102,7 @@ resource "aws_instance" "hdf-edge" {
   }
 
   tags {
-    Name = "hdf-edge-${count.index}"
+    Name = "hdf-edge-${count.index + 1}"
   }
 
   depends_on = ["aws_internet_gateway.hdp"]

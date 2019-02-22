@@ -1,4 +1,4 @@
-resource "aws_instance" "hdp-ipa" {
+resource "aws_instance" "ipa" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.ipa_count}"
 
@@ -28,7 +28,7 @@ resource "aws_instance" "hdp-ipa" {
   }
 
   tags {
-    Name = "hdp-ipa-${count.index}"
+    Name = "ipa-${count.index}"
   }
 
   depends_on = ["aws_internet_gateway.hdp"]

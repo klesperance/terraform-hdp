@@ -2,7 +2,7 @@ resource "aws_instance" "hdp-master" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.hdpmn_count}"
 
-  private_ip = "10.0.10.1${count.index}"
+  private_ip = "10.0.10.1${count.index + 1}"
 
   instance_type = "${var.hdpmn_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
@@ -28,7 +28,7 @@ resource "aws_instance" "hdp-master" {
   }
 
   tags {
-    Name = "hdp-master-${count.index}"
+    Name = "hdp-master-${count.index + 1}"
   }
 
   depends_on = ["aws_internet_gateway.hdp"]
@@ -39,7 +39,7 @@ resource "aws_instance" "hdp-worker" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.hdpwn_count}"
 
-  private_ip = "10.0.10.3${count.index}"
+  private_ip = "10.0.10.3${count.index + 1}"
 
   instance_type = "${var.hdpwn_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
@@ -65,7 +65,7 @@ resource "aws_instance" "hdp-worker" {
   }
 
   tags {
-    Name = "hdp-worker-${count.index}"
+    Name = "hdp-worker-${count.index + 1}"
   }
 
   depends_on = ["aws_internet_gateway.hdp"]
@@ -76,7 +76,7 @@ resource "aws_instance" "hdp-edge" {
   ami = "${data.aws_ami.centos.id}"
   count = "${var.hdpen_count}"
 
-  private_ip = "10.0.10.2${count.index}"
+  private_ip = "10.0.10.2${count.index + 1}"
 
   instance_type = "${var.hdpen_type}"
   subnet_id = "${aws_subnet.hdp-subnet.id}"
@@ -102,7 +102,7 @@ resource "aws_instance" "hdp-edge" {
   }
 
   tags {
-    Name = "hdp-edge-${count.index}"
+    Name = "hdp-edge-${count.index + 1}"
   }
 
   depends_on = ["aws_internet_gateway.hdp"]

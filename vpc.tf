@@ -6,6 +6,16 @@ resource "aws_vpc" "hdp" {
   }
 }
 
+#resource "aws_vpc_dhcp_options" "hdp" {
+#  domain_name = "hdptest.net"
+#  domain_name_servers = [ "10.0.10.60", "8.8.8.8, 8.8.4.4" ]
+#}
+
+#resource "aws_vpc_dhcp_options_association" "hdp" {
+#  vpc_id = "${aws_vpc.hdp.id}"
+#  dhcp_options_id = "${aws_vpc_dhcp_options.hdp.id}"
+#}
+
 resource "aws_internet_gateway" "hdp" {
   vpc_id = "${aws_vpc.hdp.id}"
 
