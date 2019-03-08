@@ -1,136 +1,110 @@
 resource "aws_vpc" "hdp" {
-  enable_dns_hostnames = true
-  cidr_block = "${var.vpc_cidr}"
-  tags {
-    Name = "hdp"
-  }
+    cidr_block = "10.0.0.0/16"
+    instance_tenancy = "default"
+    enable_dns_support = "true"
+    enable_dns_hostnames = "true"
+    enable_classiclink = "false"
+    tags {
+        Name = "hdp-vpc"
+    }
 }
 
-#resource "aws_vpc_dhcp_options" "hdp" {
-#  domain_name = "hdptest.net"
-#  domain_name_servers = [ "10.0.10.60", "8.8.8.8, 8.8.4.4" ]
-#}
+resource "aws_subnet" "hdp-private" {
+    count = 2
+    vpc_id = "${aws_vpc.hdp.id}"
+    map_public_ip_on_launch = "false"
+    availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
+    cidr_block = "${element(var.private_subnets, count.index)}"
 
-#resource "aws_vpc_dhcp_options_association" "hdp" {
-#  vpc_id = "${aws_vpc.hdp.id}"
-#  dhcp_options_id = "${aws_vpc_dhcp_options.hdp.id}"
-#}
-
-resource "aws_internet_gateway" "hdp" {
-  vpc_id = "${aws_vpc.hdp.id}"
-
-  tags {
-    Name = "hdp-ig"
-  }
-
+    tags {
+        Name = "hdp-private-sub${count.index}"
+    }
 }
 
-resource "aws_security_group" "ambari_access" {
-  ingress {
-    from_port = 8080
-    to_port = 8080
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_subnet" "hdp-public" {
+    count = 2
+    vpc_id = "${aws_vpc.hdp.id}"
+    map_public_ip_on_launch = "false"
+    availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
+    cidr_block = "${element(var.public_subnets, count.index)}"
 
-  tags {
-    Name = "ambari_access"
-  }
-
-  vpc_id = "${aws_vpc.hdp.id}"
+    tags {
+        Name = "hdp-public-sub${count.index}"
+    }
 }
 
-resource "aws_security_group" "default_cluster_access" {
-  ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_subnet" "hdp-rds" {
+    count = 2
+    vpc_id = "${aws_vpc.hdp.id}"
+    map_public_ip_on_launch = "false"
+    availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
+    cidr_block = "${element(var.rds_subnets, count.index)}"
 
-  ingress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    self = true
-  }
-
-  egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    self = true
-  }
-
-  egress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags {
-    Name = "default_cluster_access"
-  }
-
-  vpc_id = "${aws_vpc.hdp.id}"
+    tags {
+        Name = "hdp-rds-sub${count.index}"
+    }
 }
 
-resource "aws_subnet" "hdp-subnet" {
-  vpc_id = "${aws_vpc.hdp.id}"
+resource "aws_internet_gateway" "hdp-igw" {
+    vpc_id = "${aws_vpc.hdp.id}"
 
-  cidr_block = "${var.subnet_cidr}"
-  availability_zone = "${var.aws_az}"
-
-  tags {
-    Name = "hdp-subnet"
-  }
+    tags {
+        Name = "hdp-igw"
+    }
 }
 
-resource "aws_subnet" "db1-subnet" {
-  vpc_id = "${aws_vpc.hdp.id}"
+resource "aws_route_table" "hdp-public" {
+    vpc_id = "${aws_vpc.hdp.id}"
 
-  cidr_block = "${var.db1_subnet_cidr}"
-  availability_zone = "${var.db1_az}"
-
-  tags {
-    Name = "db1-subnet"
-  }
+    route {
+        cidr_block = "0.0.0.0/0"
+        gateway_id = "${aws_internet_gateway.hdp-igw.id}"
+    }
+    tags {
+        Name = "hdp-public-rt"
+    }
 }
 
-resource "aws_subnet" "db2-subnet" {
-  vpc_id = "${aws_vpc.hdp.id}"
-
-  cidr_block = "${var.db2_subnet_cidr}"
-  availability_zone = "${var.db2_az}"
-
-  tags {
-    Name = "db2-subnet"
-  }
+resource "aws_route_table_association" "hdp-public" {
+    count = 2
+    subnet_id = "${element(aws_subnet.hdp-public.*.id, count.index)}"
+    route_table_id = "${aws_route_table.hdp-public.id}"
 }
 
-resource "aws_route_table" "hdp-route" {
-  vpc_id = "${aws_vpc.hdp.id}"
+resource "aws_eip" "hdp-nat" {
+    count = 2
+    vpc = true
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.hdp.id}"
-  }
-
-  tags {
-    Name = "Default route"
-  }
+    tags {
+        Name = "hdp-nat-eip${count.index}"
+    }
 }
-   
-resource "aws_route_table_association" "hdp" {
-  subnet_id = "${aws_subnet.hdp-subnet.id}"
-  route_table_id = "${aws_route_table.hdp-route.id}"
 
+resource "aws_nat_gateway" "hdp-nat-gw" {
+    count = 2
+    allocation_id = "${element(aws_eip.hdp-nat.*.id, count.index)}"
+    subnet_id = "${element(aws_subnet.hdp-public.*.id, count.index)}"
+
+    tags {
+        Name = "hdp-nat-gw${count.index}"
+    }
+}
+
+resource "aws_route_table" "hdp-private-rt" {
+    count = 2
+    vpc_id = "${aws_vpc.hdp.id}"
+    route {
+        cidr_block = "0.0.0.0/0"
+        nat_gateway_id = "${element(aws_nat_gateway.hdp-nat-gw.*.id, count.index)}"
+    }
+
+    tags {
+        Name = "hdp-private-rt${count.index}"
+    }
+}
+
+resource "aws_route_table_association" "hdp-private" {
+    count = 2
+    subnet_id = "${element(aws_subnet.hdp-private.*.id, count.index)}"
+    route_table_id = "${element(aws_route_table.hdp-private-rt.*.id, count.index)}"
 }

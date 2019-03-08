@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "hdpdb" {
   name = "hdpdb"
-  subnet_ids = ["${aws_subnet.db1-subnet.id}", "${aws_subnet.db2-subnet.id}"]
+  subnet_ids = ["${aws_subnet.hdp-rds.0.id}", "${aws_subnet.hdp-rds.1.id}"]
 
   tags {
     Name = "HDP DB Subnet Group"
@@ -8,7 +8,7 @@ resource "aws_db_subnet_group" "hdpdb" {
 }
 
 resource "aws_db_instance" "hdp" {
-  count = "${var.db_count}"
+  count = "${var.rds_db_count}"
   allocated_storage = 20
   storage_type = "gp2"
   engine = "mariadb"

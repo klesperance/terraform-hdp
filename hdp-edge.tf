@@ -1,16 +1,19 @@
-resource "aws_instance" "ipa" {
+resource "aws_instance" "hdp-edge" {
   ami = "${data.aws_ami.centos.id}"
-  count = "${var.ipa_count}"
+  count = "${var.hdp-edge_instance_count}"
 
-  private_ip = "10.0.10.6${count.index}"
+  private_ip = "${cidrhost(element(aws_subnet.hdp-public.*.cidr_block, count.index), var.hdp-edge_start_ip + count.index)}"
 
-  instance_type = "${var.ipa_type}"
-  subnet_id = "${aws_subnet.hdp-subnet.id}"
+  instance_type = "${var.hdp-edge_instance_type}"
   vpc_security_group_ids = ["${aws_security_group.default_cluster_access.id}"]
-
+  subnet_id = "${element(aws_subnet.hdp-public.*.id, count.index)}"
   associate_public_ip_address = true
   key_name = "terraform"
-
+  user_data = <<EOF
+#cloud-config
+hostname: hdp-edge-${count.index +1}
+fqdn: hdp-edge-${count.index +1}.${var.domain}
+EOF
   ebs_optimized = false
 
   root_block_device { 
@@ -28,9 +31,7 @@ resource "aws_instance" "ipa" {
   }
 
   tags {
-    Name = "ipa-${count.index}"
+    Name = "hdp-edge-${count.index + 1}"
   }
-
-  depends_on = ["aws_internet_gateway.hdp"]
 
 }

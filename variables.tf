@@ -2,34 +2,6 @@ variable "aws_region" {
   default = "ca-central-1"
 }
 
-variable "aws_az" {
-  default = "ca-central-1a"
-}
-
-variable "db1_az" {
-  default = "ca-central-1a"
-}
-
-variable "db2_az" {
-  default = "ca-central-1b"
-}
-
-variable "vpc_cidr" {
-  default = "10.0.0.0/16"
-}
-
-variable "subnet_cidr" {
-  default = "10.0.10.0/24"
-}
-
-variable "db1_subnet_cidr" {
-  default = "10.0.20.0/25"
-}
-
-variable "db2_subnet_cidr" {
-  default = "10.0.20.128/25"
-}
-
 data "aws_ami" "centos" {
 owners      = ["679593333241"]
 most_recent = true
@@ -50,88 +22,119 @@ most_recent = true
   }
 }
 
-variable "db_count" {
+variable "hdp-ipa_instance_count" {
   default = 0
 }
 
-variable "hdpmn_count" {
-  default = 0
-}
-
-variable "hdpwn_count" {
-  default = 0
-}
-
-variable "hdpen_count" {
-  default = 0
-}
-
-variable "hdfmn_count" {
-  default = 0
-}
-
-variable "hdfwn_count" {
-  default = 0
-}
-
-variable "hdfen_count" {
-  default = 0
-}
-
-variable "hdpdp_count" {
-  default = 0
-}
-
-variable "hdpdas_count" {
-  default = 0
-}
-
-variable "ipa_count" {
-  default = 0
-}
-
-variable "hdpmn_type" {
-  default = "r4.xlarge"
-}
-
-variable "hdpwn_type" {
-  default = "r4.xlarge"
-}
-
-variable "hdpen_type" {
-  default = "r4.xlarge"
-}
-
-variable "hdfmn_type" {
-  default = "r4.xlarge"
-}
-
-variable "hdfwn_type" {
-  default = "r4.xlarge"
-}
-
-variable "hdfen_type" {
-  default = "r4.xlarge"
-}
-
-variable "hdpdas_type" {
-  default = "r4.xlarge"
-}
-
-variable "hdpdp_type" {
-  default = "r4.xlarge"
-}
-
-variable "ipa_type" {
+variable "hdp-ipa_instance_type" {
   default = "t2.small"
 }
 
+variable "hdp-edge_instance_count" {
+  default = 0
+}
+
+variable "hdp-edge_instance_type" {
+  default = "r4.xlarge"
+}
+
+variable "hdp-master_instance_count" {
+  default = 0
+}
+
+variable "hdp-master_instance_type" {
+  default = "r4.xlarge"
+}
+
+variable "hdp-worker_instance_count" {
+  default = 0
+}
+
+variable "hdp-worker_instance_type" {
+  default = "r4.xlarge"
+}
+
+variable "hdf-management_instance_count" {
+  default = 0
+}
+
+variable "hdf-management_instance_type" {
+  default = "r4.xlarge"
+}
+
+variable "hdf-edge_instance_count" {
+  default = 0
+}
+
+variable "hdf-edge_instance_type" {
+  default = "r4.xlarge"
+}
+
+variable "hdf-worker_instance_count" {
+  default = 0
+}
+
+variable "hdf-worker_instance_type" {
+  default = "r4.xlarge"
+}
+
+data "aws_availability_zones" "azs" {
+}
+
+variable "private_subnets" {
+  default = [ "10.0.10.0/24", "10.0.20.0/24" ]
+}
+
+variable "public_subnets" {
+  default = [ "10.0.100.0/24", "10.0.200.0/24" ]
+}
+
+variable "rds_subnets" {
+  default = [ "10.0.60.0/24", "10.0.70.0/24" ]
+}
+
+variable "hdp-ipa_start_ip" {
+  default = "5"
+}
+
+variable "hdp-edge_start_ip" {
+  default = "10"
+}
+
+variable "hdp-master_start_ip" {
+  default = "20"
+}
+
+variable "hdp-worker_start_ip" {
+  default = "30"
+}
+
+variable "hdf-management_start_ip" {
+  default = "40"
+}
+
+variable "hdf-worker_start_ip" {
+  default = "50"
+}
+
+variable "hdf-edge_start_ip" {
+  default = "20"
+}
+
+variable "domain" {
+  default = "hdptest.hwxopsrv.com"
+}
+
+variable "rds_db_count" {
+  default = "0"
+}
+
 variable "rds_username" {
-  default = "user"
+  default = "hdpdbuser"
 }
 
 variable "rds_password" {
-  default = "password"
+  default = "hdpdbpass"
 }
 
 variable "rds_instance_type" {
