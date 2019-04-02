@@ -8,7 +8,7 @@ resource "aws_instance" "hdf-management" {
   vpc_security_group_ids = ["${aws_security_group.default_cluster_access.id}"]
   subnet_id = "${element(aws_subnet.hdp-private.*.id, count.index)}"
   associate_public_ip_address = false
-  key_name = "terraform"
+  key_name = "${var.ssh_key}"
   user_data = <<EOF
 #cloud-config
 hostname: hdf-management-${count.index +1}
