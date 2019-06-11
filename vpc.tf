@@ -10,7 +10,7 @@ resource "aws_vpc" "hdp" {
 }
 
 resource "aws_subnet" "hdp-private" {
-    count = 2
+    count = "${length(var.private_subnets)}"
     vpc_id = "${aws_vpc.hdp.id}"
     map_public_ip_on_launch = "false"
     availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
@@ -22,7 +22,7 @@ resource "aws_subnet" "hdp-private" {
 }
 
 resource "aws_subnet" "hdp-public" {
-    count = 2
+    count = "${length(var.public_subnets)}"
     vpc_id = "${aws_vpc.hdp.id}"
     map_public_ip_on_launch = "false"
     availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
@@ -34,7 +34,7 @@ resource "aws_subnet" "hdp-public" {
 }
 
 resource "aws_subnet" "hdp-rds" {
-    count = 2
+    count = "${length(var.rds_subnets)}"
     vpc_id = "${aws_vpc.hdp.id}"
     map_public_ip_on_launch = "false"
     availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
@@ -66,13 +66,13 @@ resource "aws_route_table" "hdp-public" {
 }
 
 resource "aws_route_table_association" "hdp-public" {
-    count = 2
+    count = "${length(var.public_subnets)}"
     subnet_id = "${element(aws_subnet.hdp-public.*.id, count.index)}"
     route_table_id = "${aws_route_table.hdp-public.id}"
 }
 
 resource "aws_eip" "hdp-nat" {
-    count = 2
+    count = "${length(var.public_subnets)}"
     vpc = true
 
     tags {
@@ -81,7 +81,7 @@ resource "aws_eip" "hdp-nat" {
 }
 
 resource "aws_nat_gateway" "hdp-nat-gw" {
-    count = 2
+    count = "${length(var.public_subnets)}"
     allocation_id = "${element(aws_eip.hdp-nat.*.id, count.index)}"
     subnet_id = "${element(aws_subnet.hdp-public.*.id, count.index)}"
 
@@ -91,7 +91,7 @@ resource "aws_nat_gateway" "hdp-nat-gw" {
 }
 
 resource "aws_route_table" "hdp-private-rt" {
-    count = 2
+    count = "${length(var.public_subnets)}"
     vpc_id = "${aws_vpc.hdp.id}"
     route {
         cidr_block = "0.0.0.0/0"
@@ -104,7 +104,7 @@ resource "aws_route_table" "hdp-private-rt" {
 }
 
 resource "aws_route_table_association" "hdp-private" {
-    count = 2
+    count = "${length(var.private_subnets)}"
     subnet_id = "${element(aws_subnet.hdp-private.*.id, count.index)}"
     route_table_id = "${element(aws_route_table.hdp-private-rt.*.id, count.index)}"
 }
