@@ -82,6 +82,14 @@ variable "hdf-worker_instance_type" {
   default = "r4.xlarge"
 }
 
+variable "hdf-dp_instance_count" {
+  default = 0
+}
+
+variable "hdf-dp_instance_type" {
+  default = "r4.xlarge"
+}
+
 data "aws_availability_zones" "azs" {
 }
 
@@ -125,8 +133,16 @@ variable "hdf-edge_start_ip" {
   default = "20"
 }
 
+variable "hdf-dp_start_ip" {
+  default = "60"
+}
+
 variable "domain" {
-  default = "hdptest.hwxopsrv.com"
+  default = "cldropsrv.com"
+}
+
+variable "cluster" {
+  default = "hdptest"
 }
 
 variable "rds_db_count" {

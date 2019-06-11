@@ -12,7 +12,7 @@ resource "aws_instance" "hdf-edge" {
   user_data = <<EOF
 #cloud-config
 hostname: hdf-edge-${count.index +1}
-fqdn: hdf-edge-${count.index +1}.${var.domain}
+fqdn: hdf-edge-${count.index +1}.${var.cluster}.${var.domain}
 EOF
   ebs_optimized = false
 

@@ -9,11 +9,11 @@ resource "aws_instance" "hdp-worker" {
   subnet_id = "${element(aws_subnet.hdp-private.*.id, count.index)}"
   associate_public_ip_address = false
   key_name = "${var.ssh_key}"
-#  user_data = <<EOF
-##cloud-config
-#hostname: hdp-worker-${count.index +1}
-#fqdn: hdp-worker-${count.index +1}.${var.domain}
-#EOF
+  user_data = <<EOF
+#cloud-config
+hostname: hdp-worker-${count.index +1}
+fqdn: hdp-worker-${count.index +1}.${var.cluster}.${var.domain}
+EOF
 
   ebs_optimized = false
 

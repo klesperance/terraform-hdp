@@ -12,7 +12,7 @@ resource "aws_instance" "hdf-worker" {
   user_data = <<EOF
 #cloud-config
 hostname: hdf-worker-${count.index +1}
-fqdn: hdf-worker-${count.index +1}.${var.domain}
+fqdn: hdf-worker-${count.index +1}.${var.cluster}.${var.domain}
 EOF
 
   ebs_optimized = false
