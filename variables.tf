@@ -160,3 +160,7 @@ variable "rds_password" {
 variable "rds_instance_type" {
   default = "db.t2.medium"
 }
+
+variable "ssh_access_cidr" {
+  default = "0.0.0.0/0"
+}

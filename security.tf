@@ -18,7 +18,7 @@ resource "aws_security_group" "default_cluster_access" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["192.175.27.2/32","69.41.198.118/32","65.23.12.218/32"]
+    cidr_blocks = "${split(",", var.ssh_access_cidr)}"
   }
 
   ingress {
