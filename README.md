@@ -33,3 +33,5 @@ rds_db_count = 1
 hdf-dp_instance_count = 1
 ssh_access_cidr = "1.2.3.4/32,2.3.4.0/24"
 ```
+
+Please be sure to update `ssh_access_cidr`, otherwise your cluster edge nodes will be wide open to the internet.
