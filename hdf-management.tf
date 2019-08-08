@@ -31,7 +31,7 @@ EOF
     encrypted = true
   }
 
-  tags {
+  tags = {
     Name = "hdf-management-${count.index + 1}"
   }
 

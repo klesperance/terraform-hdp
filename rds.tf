@@ -2,7 +2,7 @@ resource "aws_db_subnet_group" "hdpdb" {
   name = "hdpdb"
   subnet_ids = ["${aws_subnet.hdp-rds.0.id}", "${aws_subnet.hdp-rds.1.id}"]
 
-  tags {
+  tags = {
     Name = "HDP DB Subnet Group"
   }
 }
@@ -21,7 +21,7 @@ resource "aws_db_instance" "hdp" {
   vpc_security_group_ids = ["${aws_security_group.default_cluster_access.id}"]
   skip_final_snapshot = true
 
-  tags {
+  tags = {
     Name = "HDP DB Instance"
   }
 

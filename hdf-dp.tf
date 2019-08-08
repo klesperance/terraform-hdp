@@ -31,7 +31,7 @@ EOF
     encrypted = true
   }
 
-  tags {
+  tags = {
     Name = "hdf-dp-${count.index + 1}"
   }
 

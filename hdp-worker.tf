@@ -55,7 +55,7 @@ EOF
     encrypted = true
   }
 
-  tags {
+  tags = {
     Name = "hdp-worker-${count.index + 1}"
   }
 

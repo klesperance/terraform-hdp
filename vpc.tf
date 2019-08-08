@@ -4,7 +4,7 @@ resource "aws_vpc" "hdp" {
     enable_dns_support = "true"
     enable_dns_hostnames = "true"
     enable_classiclink = "false"
-    tags {
+    tags = {
         Name = "hdp-vpc"
     }
 }
@@ -16,7 +16,7 @@ resource "aws_subnet" "hdp-private" {
     availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
     cidr_block = "${element(var.private_subnets, count.index)}"
 
-    tags {
+    tags = {
         Name = "hdp-private-sub${count.index}"
     }
 }
@@ -28,7 +28,7 @@ resource "aws_subnet" "hdp-public" {
     availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
     cidr_block = "${element(var.public_subnets, count.index)}"
 
-    tags {
+    tags = {
         Name = "hdp-public-sub${count.index}"
     }
 }
@@ -40,7 +40,7 @@ resource "aws_subnet" "hdp-rds" {
     availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
     cidr_block = "${element(var.rds_subnets, count.index)}"
 
-    tags {
+    tags = {
         Name = "hdp-rds-sub${count.index}"
     }
 }
@@ -48,7 +48,7 @@ resource "aws_subnet" "hdp-rds" {
 resource "aws_internet_gateway" "hdp-igw" {
     vpc_id = "${aws_vpc.hdp.id}"
 
-    tags {
+    tags = {
         Name = "hdp-igw"
     }
 }
@@ -60,7 +60,7 @@ resource "aws_route_table" "hdp-public" {
         cidr_block = "0.0.0.0/0"
         gateway_id = "${aws_internet_gateway.hdp-igw.id}"
     }
-    tags {
+    tags = {
         Name = "hdp-public-rt"
     }
 }
@@ -75,7 +75,7 @@ resource "aws_eip" "hdp-nat" {
     count = "${length(var.public_subnets)}"
     vpc = true
 
-    tags {
+    tags = {
         Name = "hdp-nat-eip${count.index}"
     }
 }
@@ -85,7 +85,7 @@ resource "aws_nat_gateway" "hdp-nat-gw" {
     allocation_id = "${element(aws_eip.hdp-nat.*.id, count.index)}"
     subnet_id = "${element(aws_subnet.hdp-public.*.id, count.index)}"
 
-    tags {
+    tags = {
         Name = "hdp-nat-gw${count.index}"
     }
 }
@@ -98,7 +98,7 @@ resource "aws_route_table" "hdp-private-rt" {
         nat_gateway_id = "${element(aws_nat_gateway.hdp-nat-gw.*.id, count.index)}"
     }
 
-    tags {
+    tags = {
         Name = "hdp-private-rt${count.index}"
     }
 }

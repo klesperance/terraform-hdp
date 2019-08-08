@@ -6,7 +6,7 @@ resource "aws_security_group" "ambari_access" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "hdp-ambari_access"
   }
 
@@ -49,7 +49,7 @@ resource "aws_security_group" "default_cluster_access" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "hdp-default_cluster_access"
   }
 

@@ -31,7 +31,7 @@ EOF
     encrypted = true
   }
 
-  tags {
+  tags = {
     Name = "hdp-ipa-${count.index + 1}"
   }
 

@@ -30,7 +30,7 @@ EOF
     encrypted = true
   }
 
-  tags {
+  tags = {
     Name = "hdf-edge-${count.index + 1}"
   }
 

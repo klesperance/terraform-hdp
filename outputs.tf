@@ -34,6 +34,6 @@ output "hdf-worker_private_ips" {
   value = ["${aws_instance.hdf-worker.*.private_ip}"]
 }
 
-output "RDS endpoint" {
+output "RDS_endpoint" {
   value = "${aws_db_instance.hdp.*.endpoint}"
 }
