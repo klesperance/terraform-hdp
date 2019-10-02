@@ -31,7 +31,7 @@ EOF
   }
 
   tags = {
-    Name = "hdf-edge-${count.index + 1}"
+    Name = "hdf-edge-${count.index + 1}.${var.cluster}"
   }
 
 }

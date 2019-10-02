@@ -32,7 +32,7 @@ EOF
   }
 
   tags = {
-    Name = "hdp-master-${count.index + 1}"
+    Name = "hdp-master-${count.index + 1}.${var.cluster}"
   }
 
 }

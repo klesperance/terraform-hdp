@@ -56,7 +56,7 @@ EOF
   }
 
   tags = {
-    Name = "hdp-worker-${count.index + 1}"
+    Name = "hdp-worker-${count.index + 1}.${var.cluster}"
   }
 
 }

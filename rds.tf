@@ -1,5 +1,5 @@
 resource "aws_db_subnet_group" "hdpdb" {
-  name = "hdpdb"
+  name = "${var.cluster}-db"
   subnet_ids = ["${aws_subnet.hdp-rds.0.id}", "${aws_subnet.hdp-rds.1.id}"]
 
   tags = {
@@ -14,7 +14,7 @@ resource "aws_db_instance" "hdp" {
   engine = "${var.rds_engine}"
   engine_version = "${var.rds_engine_version}"
   instance_class = "${var.rds_instance_type}"
-  identifier = "hdp"
+  identifier = "${var.cluster}-db"
   username = "${var.rds_username}"
   password = "${var.rds_password}"
   db_subnet_group_name = "${aws_db_subnet_group.hdpdb.name}"
@@ -22,7 +22,7 @@ resource "aws_db_instance" "hdp" {
   skip_final_snapshot = true
 
   tags = {
-    Name = "HDP DB Instance"
+    Name = "HDP DB Instance - ${var.cluster}"
   }
 
 }
