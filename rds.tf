@@ -11,8 +11,8 @@ resource "aws_db_instance" "hdp" {
   count = "${var.rds_db_count}"
   allocated_storage = 20
   storage_type = "gp2"
-  engine = "mariadb"
-  engine_version = "10.2.15"
+  engine = "${var.rds_engine}"
+  engine_version = "${var.rds_engine_version}"
   instance_class = "${var.rds_instance_type}"
   identifier = "hdp"
   username = "${var.rds_username}"

@@ -161,6 +161,14 @@ variable "rds_instance_type" {
   default = "db.t2.medium"
 }
 
+variable "rds_engine" {
+  default = "mariadb"
+}
+
+variable "rds_engine_version" {
+  default = "10.2.15"
+}
+
 variable "ssh_access_cidr" {
   default = "0.0.0.0/0"
 }
