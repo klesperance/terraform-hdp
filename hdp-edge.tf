@@ -32,6 +32,7 @@ EOF
 
   tags = {
     Name = "hdp-edge-${count.index + 1}.${var.cluster}"
+    Owner = "${var.owner}"
   }
 
 }

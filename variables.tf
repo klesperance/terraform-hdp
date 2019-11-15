@@ -172,3 +172,7 @@ variable "rds_engine_version" {
 variable "ssh_access_cidr" {
   default = "0.0.0.0/0"
 }
+
+variable "owner" {
+  default = "klesperance"
+}

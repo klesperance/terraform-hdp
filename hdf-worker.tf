@@ -57,6 +57,7 @@ EOF
 
   tags = {
     Name = "hdf-worker-${count.index + 1}.${var.cluster}"
+    Owner = "${var.owner}"
   }
 
 }

@@ -33,6 +33,7 @@ EOF
 
   tags = {
     Name = "hdp-master-${count.index + 1}.${var.cluster}"
+    Owner = "${var.owner}"
   }
 
 }
