@@ -1,14 +1,14 @@
 resource "aws_instance" "hdp-edge" {
-  ami = "${data.aws_ami.centos.id}"
-  count = "${var.hdp-edge_instance_count}"
+  ami = data.aws_ami.centos.id
+  count = var.hdp-edge_instance_count
 
-  private_ip = "${cidrhost(element(aws_subnet.hdp-public.*.cidr_block, count.index), var.hdp-edge_start_ip + count.index)}"
+  private_ip = cidrhost(element(aws_subnet.hdp-public.*.cidr_block, count.index), var.hdp-edge_start_ip + count.index)
 
-  instance_type = "${var.hdp-edge_instance_type}"
-  vpc_security_group_ids = ["${aws_security_group.default_cluster_access.id}"]
-  subnet_id = "${element(aws_subnet.hdp-public.*.id, count.index)}"
+  instance_type = var.hdp-edge_instance_type
+  vpc_security_group_ids = [aws_security_group.default_cluster_access.id]
+  subnet_id = element(aws_subnet.hdp-public.*.id, count.index)
   associate_public_ip_address = true
-  key_name = "${var.ssh_key}"
+  key_name = var.ssh_key
   user_data = <<EOF
 #cloud-config
 hostname: hdp-edge-${count.index +1}
@@ -32,7 +32,7 @@ EOF
 
   tags = {
     Name = "hdp-edge-${count.index + 1}.${var.cluster}"
-    Owner = "${var.owner}"
+    Owner = var.owner
   }
 
 }

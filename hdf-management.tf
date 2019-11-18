@@ -1,14 +1,14 @@
 resource "aws_instance" "hdf-management" {
-  ami = "${data.aws_ami.centos.id}"
-  count = "${var.hdf-management_instance_count}"
+  ami = data.aws_ami.centos.id
+  count = var.hdf-management_instance_count
 
-  private_ip = "${cidrhost(element(aws_subnet.hdp-private.*.cidr_block, count.index), var.hdf-management_start_ip + count.index)}"
+  private_ip = cidrhost(element(aws_subnet.hdp-private.*.cidr_block, count.index), var.hdf-management_start_ip + count.index)
 
-  instance_type = "${var.hdf-management_instance_type}"
-  vpc_security_group_ids = ["${aws_security_group.default_cluster_access.id}"]
-  subnet_id = "${element(aws_subnet.hdp-private.*.id, count.index)}"
+  instance_type = var.hdf-management_instance_type
+  vpc_security_group_ids = [aws_security_group.default_cluster_access.id]
+  subnet_id = element(aws_subnet.hdp-private.*.id, count.index)
   associate_public_ip_address = false
-  key_name = "${var.ssh_key}"
+  key_name = var.ssh_key
   user_data = <<EOF
 #cloud-config
 hostname: hdf-management-${count.index +1}
@@ -33,7 +33,7 @@ EOF
 
   tags = {
     Name = "hdf-management-${count.index + 1}.${var.cluster}"
-    Owner = "${var.owner}"
+    Owner = var.owner
   }
 
 }

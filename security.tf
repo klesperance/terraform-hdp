@@ -10,7 +10,7 @@ resource "aws_security_group" "ambari_access" {
     Name = "hdp-ambari_access"
   }
 
-  vpc_id = "${aws_vpc.hdp.id}"
+  vpc_id = aws_vpc.hdp.id
 }
 
 resource "aws_security_group" "default_cluster_access" {
@@ -18,7 +18,7 @@ resource "aws_security_group" "default_cluster_access" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = "${split(",", var.ssh_access_cidr)}"
+    cidr_blocks = split(",", var.ssh_access_cidr)
   }
 
   ingress {
@@ -53,5 +53,5 @@ resource "aws_security_group" "default_cluster_access" {
     Name = "hdp-default_cluster_access"
   }
 
-  vpc_id = "${aws_vpc.hdp.id}"
+  vpc_id = aws_vpc.hdp.id
 }
