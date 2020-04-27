@@ -17,13 +17,13 @@ EOF
 
   ebs_optimized = false
 
-  root_block_device { 
+  root_block_device {
     volume_type = "gp2"
     volume_size = "50"
     delete_on_termination = true
   }
 
-  ebs_block_device { 
+  ebs_block_device {
     device_name = "/dev/sdf"
     volume_type = "gp2"
     volume_size = "100"

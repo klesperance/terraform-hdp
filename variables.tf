@@ -8,11 +8,13 @@ variable "ssh_key" {
 
 data "aws_ami" "centos" {
 owners      = ["679593333241"]
-most_recent = true
+most_recent = false
 
   filter {
-      name   = "name"
-      values = ["CentOS Linux 7 x86_64 HVM EBS *"]
+      #name   = "name"
+      name = "image-id"
+      values = ["ami-033e6106180a626d0"]
+      #values = ["CentOS Linux 7 x86_64 HVM EBS *"]
   }
 
   filter {
@@ -166,7 +168,7 @@ variable "rds_engine" {
 }
 
 variable "rds_engine_version" {
-  default = "10.2.15"
+  default = "10.2.21"
 }
 
 variable "ssh_access_cidr" {
